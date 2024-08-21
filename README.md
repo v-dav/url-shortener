@@ -4,6 +4,8 @@
 ![CSS](https://img.shields.io/badge/CSS-3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
+## Live [Here]()
+
 ## Project Description
 
 This project is a simple URL Shortener web application that allows users to generate short URLs for longer links, track the number of clicks on each shortened URL, and manage (edit/delete) the generated URLs. It utilizes HTML, CSS, and JavaScript for the front-end interface and functionality.
@@ -14,6 +16,9 @@ This project is a simple URL Shortener web application that allows users to gene
 - **Click Counter**: Track the number of times the shortened URL is clicked.
 - **Edit Short URL**: Edit the generated short URL part.
 - **Delete URLs**: Delete specific URLs or clear the entire list of URLs.
+
+## Screenshot
+<img width="1210" alt="Skärmavbild 2024-08-21 kl  23 07 33" src="https://github.com/user-attachments/assets/d7f4970b-02ac-4fc3-9ef1-e6114b173de3">
 
 
 ## Example
