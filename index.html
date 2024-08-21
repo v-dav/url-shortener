@@ -1,160 +1,316 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <title>URL Shortener</title>
-    <style>
-        h1 {
-            font-family: "Adobe Arabic",serif ;
-        }
-        body {
-            text-align: center;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>URL Shortener</title>
+	<style>
+		/* Reset some basic elements */
+		body,
+		h1,
+		input,
+		button {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+		}
 
-        button {
-            background-color: cornflowerblue;
-            border: none;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-        }
+		/* Set body background and font color */
+		body {
+			background-color: #f4f4f4;
+			color: #333;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			flex-direction: column;
+		}
 
-        #input-url {
-            padding: 13px;
-            border-radius: 5px;
-        }
+		/* Header styling */
+		h1 {
+			font-size: 2.5rem;
+			margin-bottom: 20px;
+			color: #007ACC;
+			font-weight: 700;
+		}
 
-        span {
-            margin-left: 10px;
-            margin-right: 10px;
-        }
+		/* Style the input */
+		#input-url {
+			padding: 12px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			width: 300px;
+			font-size: 1rem;
+			margin-bottom: 20px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+			transition: border-color 0.3s ease;
+		}
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+		#input-url:focus {
+			border-color: #007ACC;
+			outline: none;
+		}
 
-        ol {
-            list-style-type: none;
-        }
+		/* Button styling */
+		button {
+			background-color: #007ACC;
+			border: none;
+			color: white;
+			padding: 15px 20px;
+			font-size: 1rem;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			margin: 0 5px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+		}
 
-        li {
-            margin-top: 20px;
-        }
-    </style>
+		button:hover {
+			background-color: #005fa3;
+		}
+
+		/* Container for the list */
+		.container {
+			width: 100%;
+			max-width: 600px;
+			margin-top: 20px;
+		}
+
+		/* Styling the list */
+		ol {
+			list-style-type: none;
+			padding: 0;
+		}
+
+		li {
+			display: flex;
+			flex-direction: column;
+			/* Stack child elements vertically */
+			align-items: flex-start;
+			/* Aligns items to the start of the container */
+			padding: 10px;
+			background-color: #f9f9f9;
+			border-radius: 5px;
+			margin-top: 20px;
+		}
+
+		li a {
+			color: #007ACC;
+			text-decoration: none;
+			font-weight: bold;
+			transition: color 0.3s ease;
+		}
+
+		li a:hover {
+			color: #005fa3;
+		}
+
+		/* Span styling */
+		#list-url li span .url-text {
+			font-size: 0.9rem;
+			padding: 5px;
+			border-radius: 3px;
+			color: black;
+			background-color: #f4f4f4;
+		}
+
+		/* Style the edit button inside the list */
+		li button {
+			background-color: #f4f4f4;
+			color: #333;
+			padding: 5px 10px;
+			font-size: 0.9rem;
+			border-radius: 3px;
+			box-shadow: none;
+			margin-left: 10px;
+			transition: background-color 0.3s ease;
+		}
+
+		li button:hover {
+			background-color: #e0e0e0;
+		}
+
+		/* Error message styling */
+		p {
+			color: red;
+			margin-top: 10px;
+			font-weight: bold;
+		}
+
+		.url-text {
+			word-wrap: break-word;
+			white-space: normal;
+			overflow-wrap: break-word;
+			max-width: 100%;
+			margin-bottom: 10px;
+			margin-top: 10px;
+			display: block;
+			/* Ensures the URL text takes up the full width of the container */
+		}
+
+		.click-counter {
+			background-color: #f4f4f4;
+			color: #333;
+			padding: 5px 10px;
+			font-size: 0.9rem;
+			border-radius: 3px;
+			box-shadow: none;
+			transition: background-color 0.3s ease;
+		}
+
+		.buttons-div {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			width: 100%;
+		}
+
+		.remove-btn {
+			background-color: #b52c2c;
+			color: #ffffff;
+			padding: 5px 10px;
+			font-size: 0.9rem;
+			border-radius: 3px;
+			box-shadow: none;
+			transition: background-color 0.3s ease;
+		}
+	</style>
 </head>
+
 <body>
-<h1>URL Shortener</h1>
-<input type="text" id="input-url" placeholder="Enter a url">
-<button type="button" id="button-create" onclick="generateUrl()">Create</button>
-<button type="button" id="button-delete" onclick="deleteUrl()">Delete</button>
-<div class="container">
-    <ol id="list-url">
+	<h1>URL Shortener</h1>
+	<input type="text" id="input-url" placeholder="Enter a URL">
+	<div>
+		<button type="button" id="button-create" onclick="generateUrl()">Create</button>
+		<button type="button" id="button-delete" onclick="deleteUrl()">Clear</button>
+	</div>
+	<div class="container">
+		<ol id="list-url"></ol>
+	</div>
+</body>
 
-    </ol>
-</div>
+</html>
 <script>
-    function generateUrl() {
-        const inputUrl = document.getElementById("input-url").value.trim();
-        const list = document.getElementById("list-url");
-        let validUrl = urlValidityChecker(inputUrl);
-        if (validUrl) {
-            let constantUrlPart = "localhost/";
-            let variableUrlPart = randomUrlSet(5);
-            if (document.querySelector("p")) {
-                document.querySelector("p").remove();
-            }
-            const outputUrl = constantUrlPart + variableUrlPart;
-            const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.innerText = outputUrl;
-            a.setAttribute("href", inputUrl);
-            a.setAttribute("target", "_blank");
-            li.append(a);
+	function generateUrl() {
+		const inputUrl = document.getElementById("input-url").value.trim();
+		const list = document.getElementById("list-url");
+		let validUrl = urlValidityChecker(inputUrl);
+		if (validUrl) {
+			let constantUrlPart = "localhost/";
+			let variableUrlPart = randomUrlSet(5);
+			if (document.querySelector("p")) {
+				document.querySelector("p").remove();
+			}
+			const outputUrl = constantUrlPart + variableUrlPart;
+			const li = document.createElement("li");
+			const a = document.createElement("a");
+			a.innerText = outputUrl;
+			a.setAttribute("href", inputUrl);
+			a.setAttribute("target", "_blank");
+			li.append(a);
 
-            // Click counter part
-            const clickCounter = document.createElement("span");
-            clickCounter.innerHTML = "Clicks: 0";
-            li.append(" - " + inputUrl + " - ");
-            li.append(clickCounter);
+			// Click counter part
+			const clickCounter = document.createElement("span");
+			clickCounter.className = "click-counter";
+			clickCounter.innerHTML = "Clicks: 0";
+			const urlTextSpan = document.createElement('span');
+			urlTextSpan.className = 'url-text';
+			urlTextSpan.textContent = inputUrl;
 
-            // Edit part
-            const editButton = document.createElement("button");
-            editButton.textContent = "Edit";
-            li.append(editButton);
-            list.append(li);
+			// Append the span to the list item
+			li.append(urlTextSpan);
 
-            // Counter logic
-            let count = 0;
-            a.addEventListener("click", () => {
-                count++;
-                clickCounter.innerHTML = "Clicks: " + count;
-            })
+			const buttonsDiv = document.createElement("div");
+			buttonsDiv.className = "buttons-div";
+			buttonsDiv.append(clickCounter);
 
-            const editInput = document.createElement("input");
-            const saveButton = document.createElement("button");
-            saveButton.textContent = "Save";
-            editInput.value = variableUrlPart;
+			// Edit part
+			const editButton = document.createElement("button");
+			editButton.textContent = "Edit";
+			buttonsDiv.append(editButton);
+			li.append(buttonsDiv);
+			list.append(li);
 
-            // Edit logic
-            editButton.addEventListener("click", () => {
-                a.remove();
-                editButton.remove();
-                li.prepend(editInput);
-                li.append(saveButton);
-            });
+			// Counter logic
+			let count = 0;
+			a.addEventListener("click", () => {
+				count++;
+				clickCounter.innerHTML = "Clicks: " + count;
+			})
 
-            // Save logic
-            saveButton.addEventListener("click", () => {
-                variableUrlPart = editInput.value;
-                a.innerText = constantUrlPart + variableUrlPart;
-                li.prepend(a);
-                editInput.remove();
-                saveButton.remove();
-                li.append(editButton);
-            })
-        } else {
-            if (!document.querySelector("p")) {
-                const errorMessage = document.createElement("p");
-                errorMessage.textContent = "Please enter a valid url";
-                list.after(errorMessage);
-            }
-        }
-    }
+			const editInput = document.createElement("input");
+			const saveButton = document.createElement("button");
+			saveButton.textContent = "Save";
+			editInput.value = variableUrlPart;
 
-    function urlValidityChecker(url) {
-        const re = /^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\/[a-zA-Z0-9-_].+$/;
-        return re.test(url);
-    }
+			// Edit logic
+			editButton.addEventListener("click", () => {
+				a.remove();
+				editButton.remove();
+				li.prepend(editInput);
+				buttonsDiv.insertBefore(saveButton, removeButton); 
+			});
 
-    function randomUrlSet(length) {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    }
+			// Save logic
+			saveButton.addEventListener("click", () => {
+				variableUrlPart = editInput.value;
+				a.innerText = constantUrlPart + variableUrlPart;
+				li.prepend(a);
+				editInput.remove();
+				saveButton.remove();
+				buttonsDiv.insertBefore(editButton, removeButton);
+			})
 
-    function deleteUrl() {
-        const input = document.getElementById("input-url").value.trim();
-        const list = document.getElementById("list-url");
-        if (input === "") {
-            list.innerHTML = "";
-        } else {
-            const allLinks = Array.from(list.getElementsByTagName("li"));
-            console.log(allLinks);
-            for (let link of allLinks) {
-                const a = link.getElementsByTagName("a")[0];
-                const textNode = a.nextSibling;
-                if(textNode.nodeValue.trim().includes(input)) {
-                    link.remove();
-                }
-            }
-        }
-    }
+			// Remove button and logic
+			const removeButton = document.createElement("button");
+			removeButton.className = "remove-btn";
+			removeButton.textContent = "Remove";
+			buttonsDiv.append(removeButton);
+
+			removeButton.addEventListener("click", () => {
+				li.remove();
+			});
+		} else {
+			if (!document.querySelector("p")) {
+				const errorMessage = document.createElement("p");
+				errorMessage.textContent = "Please enter a valid url";
+				list.after(errorMessage);
+			}
+		}
+	}
+
+	function urlValidityChecker(url) {
+		const re = /^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\/[a-zA-Z0-9-_].+$/;
+		return re.test(url);
+	}
+
+	function randomUrlSet(length) {
+		const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		let result = "";
+		for (let i = 0; i < length; i++) {
+			result += chars.charAt(Math.floor(Math.random() * chars.length));
+		}
+		return result;
+	}
+
+	function deleteUrl() {
+		const input = document.getElementById("input-url").value.trim();
+		const list = document.getElementById("list-url");
+
+		if (input === "") {
+			list.innerHTML = "";
+		} else {
+			const allLinks = Array.from(list.getElementsByTagName("li"));
+			for (let link of allLinks) {
+				const span = link.querySelector(".url-text");
+				if (span && span.textContent.includes(input)) {
+					link.remove();
+				}
+			}
+		}
+	}
 </script>
 </body>
+
 </html>
